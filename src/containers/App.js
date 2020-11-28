@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import CardList from './CardList';
+import CardList from '../components/CardList';
 //import { robots } from './robots';
-import SearchBox from './Searchbox' ;
+import SearchBox from '../components/Searchbox' ;
 import './App.css' ;
-import Scroll from './Scroll'
+import Scroll from '../components/Scroll'
 
 class App extends Component {
     constructor () {
@@ -13,7 +13,6 @@ class App extends Component {
             searchfield:''
         }
     }
-
     componentDidMount () {
        fetch('http://jsonplaceholder.typicode.com/users')
        .then(response => response.json())
@@ -22,20 +21,22 @@ class App extends Component {
        })
     }
 
-
     onSearchChange = (event) => {
             this.setState({searchfield: event.target.value})
 
             }
 
      render (){
-        const filteredRobots = this.state.robots.filter(robot => {
-            return robot.name.toLocaleLowerCase().includes(this.state.searchfield.toLocaleLowerCase())
+         const  {robots,searchfield } = this.state
+        const filteredRobots = robots.filter(robot => {
+            return robot.name.toLocaleLowerCase().includes(searchfield.toLocaleLowerCase())
         });
-        if (this.state.robots.length === 0){
-            return <h2><strong>Loading....</strong></h2>
-        } else{
-            return (
+
+        
+         return robots.length === 0 ?
+            <h2><strong>Loading....</strong></h2>
+        :
+            (
                 <div className="h1 tc">
                     <h1>
                         Robot friends
@@ -51,7 +52,6 @@ class App extends Component {
         
             )
 
-        }
      }
 
 }
