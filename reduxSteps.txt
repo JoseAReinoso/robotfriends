@@ -1,0 +1,64 @@
+1. install redux  = npm install redux
+2. install react-redux = npm install react-redux
+3. (note:Once you review redux, check out redux tookit to simplify redux code a bit)
+//note: the flow of redux goes like this = action => reducer => Store => Makes changes to website.
+
+//Creating actions
+1. create an actions folders under src and a files actions.js and constants.js
+2. On the constants file you will make variables that will hold action's type, the adventage of this is that if you miss spell it you would 
+get an error while developing.
+
+//create reducers
+1. create a reducer folder with reducers.js in it and import the constant there as well.
+2. create a initial state there and a funtion that has default initial state and empty object as the second argument where
+the action info will go through
+3.That funtion will have conditionals that will act based on the actions
+
+//use redux throughout our application by adding the provider and connect to our index.js
+1.import {Provider} from 'react-redux'on index.js
+2. Now lets create the store =
+* import {createStore} from 'redux'
+* import {Provider} from 'react-redux';
+* import our reducer in index.js = import { searchRobots } from './reducers/reducers';
+* use our reducer on our store = const store = createStore(searchRobots)
+* Then pass that store through our app  <Provider store= {store}><App/></Provider> ... 
+* move on to our App.js inside of our container and import our actions and import {setSearchField} from '../actions/actions';
+and import {connect} from 'react-redux';
+* at the botton connect our redux = export default connect(mapStateToProps, mapDispatchToProps)(App)
+* setup our mapStateToProps and our mapDispatchToProps
+* after this remove all the code that were using old state searchField inside the class componenet and replace with the new one coming from
+redux reducer. 
+
+// Install createLogger middleware to help debugging react-redux
+*npm install redux-logger
+*import it on the index.js = import {createLogger} from 'redux-logger'
+*import applyMiddleware from redux = import {createStore,applyMiddleware} from 'redux';
+*save it to a variable = const logger = createLogger()
+*then update the store with it = const store = createStore(searchRobot, applyMiddleware(logger))
+*in this simply type something on the app and see the magic happening on our web console
+
+//handling async actions via redux-thunk
+* npm install redux-thunk
+* import it on index.js = import thunkMiddleware from 'redux-thunk';
+* apply it on the applymiddleware function = const store = createStore(searchRobots, applyMiddleware(thunkMiddleware, logger))
+
+//using redux-thunk now on fetch functions
+*Start by creating constant needed on constants (one if fetch is sucessfull,failed or pending)
+*import all these contants on your actions and reducers
+*create the actions for them on actions.js
+*create the requestRoobots reducer on reducer.js as well as its separate state
+*import our new requestRobots reducer on index.js
+*Now since you will be having more than one reducer import combineReducers on index.js =  import {createStore,applyMiddleware, combineReducers} from 'redux';
+*then create a variable rootReducers to combine all reducers into the combineReducers method = const rootReducers = combineReducers({searchRobots,requestRobots})
+*add this rootReducers to our store = const store = createStore(rootReducers, applyMiddleware(thunkMiddleware, logger))
+*Now go ahead and set our new states on mapStateToProps inside of app.js
+*call our action from our mapDispatchToprops inside of app.js passing the dispatch as an argument  = requestRobots(dispatch)
+*call our onRequestRobots from componentDidMount() in app.js = componentDidMount () {
+        this.props.onRequestRobots()
+    }
+*    
+
+
+
+
+
